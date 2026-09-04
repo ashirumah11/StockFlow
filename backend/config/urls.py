@@ -16,9 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+# cSpell:ignore simplejwt
+from rest_framework_simplejwt.views import (  # type: ignore[import-not-found]
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('api/', include('inventory.urls')),
+    path('api/auth/', include('accounts.urls')),
+
+    path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
