@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,6 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # Email
@@ -144,8 +147,46 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ),
     'DEFAULT_PAGINATION_CLASS': (
-        'rest_framework.pagination.PageNumberPagination'
+        'rest_framework.pagination.PageNumberPagination',
     ),
     'PAGE_SIZE': 10,
+}
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'StockFlow Admin',
+    'site_header': 'StockFlow',
+    'site_brand': 'StockFlow',
+    'welcome_sign': 'StockFlow Administration',
+    'theme': 'flatly',
+    'show_sidebar': True,
+    'navigation_expanded': True,
+    'show_ui_builder': False,
+    'custom_css': 'admin/css/stockflow-admin.css',
+    'custom_js': 'admin/js/stockflow-admin.js',
+    'related_modal_active': True,
+    'changeform_format': 'horizontal_tabs',
+    'icons': {
+        'inventory': 'fas fa-boxes',
+        'inventory.product': 'fas fa-box',
+        'inventory.category': 'fas fa-tags',
+        'inventory.supplier': 'fas fa-truck',
+        'inventory.stockmovement': 'fas fa-right-left',
+        'inventory.notification': 'fas fa-bell',
+        'inventory.userprofile': 'fas fa-user-gear',
+        'auth.user': 'fas fa-users',
+        'auth.group': 'fas fa-user-shield',
+    },
+    'order_with_respect_to': [
+        'inventory',
+        'inventory.product',
+        'inventory.stockmovement',
+        'inventory.category',
+        'inventory.supplier',
+        'inventory.notification',
+        'inventory.userprofile',
+        'auth',
+        'auth.user',
+        'auth.group',
+    ],
 }
 

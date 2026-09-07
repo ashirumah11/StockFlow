@@ -1,0 +1,707 @@
+#header,
+#nav-sidebar,
+.breadcrumbs,
+#user-tools,
+#footer {
+    display: none !important;
+}
+
+html,
+body,
+#container,
+#content,
+#content-main {
+    background: #f4f7fb !important;
+    margin: 0 !important;
+    min-height: 100%;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.stockflow-brand-link {
+    display: none;
+}
+
+.stockflow-dashboard {
+    color: #142b4d;
+    display: flex;
+    font-family: "DM Sans", "Segoe UI", sans-serif;
+    min-height: 100vh;
+}
+
+.stockflow-sidebar {
+    background: linear-gradient(180deg, #0d2748, #0c294c);
+    color: #d8e5f6;
+    display: flex;
+    flex: 0 0 199px;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 16px 10px 14px;
+}
+
+.stockflow-logo {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    font-size: 17px;
+    gap: 9px;
+    padding: 0 9px 19px;
+}
+
+.stockflow-logo span {
+    align-items: center;
+    background: linear-gradient(135deg, #2bb3ed, #2877e9);
+    border-radius: 8px;
+    display: flex;
+    font-weight: 700;
+    height: 29px;
+    justify-content: center;
+    width: 29px;
+}
+
+.stockflow-sidebar nav {
+    display: grid;
+    gap: 4px;
+}
+
+.stockflow-sidebar nav a {
+    align-items: center;
+    border-radius: 6px;
+    color: #d1ddec;
+    display: flex;
+    font-size: 11px;
+    gap: 12px;
+    padding: 10px 11px;
+    text-decoration: none;
+}
+
+.stockflow-sidebar nav a:hover,
+.stockflow-sidebar nav a.active {
+    background: #1764c4;
+    color: #fff;
+}
+
+.stockflow-sidebar nav a b {
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    width: 17px;
+}
+
+.stockflow-sidebar hr {
+    background: #ffffff1c;
+    border: 0;
+    height: 1px;
+    margin: 17px 9px 13px;
+    width: calc(100% - 18px);
+}
+
+.stockflow-account {
+    align-items: center;
+    border-top: 1px solid #ffffff1c;
+    display: flex;
+    gap: 8px;
+    margin: auto 9px 0;
+    padding-top: 14px;
+}
+
+.stockflow-account>span {
+    align-items: center;
+    background: #3186eb;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    font-size: 10px;
+    font-weight: 700;
+    height: 31px;
+    justify-content: center;
+    width: 31px;
+}
+
+.stockflow-account p {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+}
+
+.stockflow-account strong {
+    color: #fff;
+    font-size: 10px;
+}
+
+.stockflow-account small {
+    color: #a9bbd2;
+    font-size: 9px;
+}
+
+.stockflow-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.stockflow-topbar {
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #e5ebf3;
+    display: flex;
+    height: 55px;
+    justify-content: space-between;
+    padding: 0 25px;
+}
+
+.stockflow-search {
+    background: #f7f9fc;
+    border: 1px solid #e1e9f3;
+    border-radius: 6px;
+    color: #7890aa;
+    font-size: 18px;
+    max-width: 398px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.stockflow-search span {
+    color: #8b9bb0;
+    font-size: 11px;
+}
+
+.stockflow-user-tools {
+    align-items: center;
+    color: #6f829a;
+    display: flex;
+    font-size: 10px;
+    gap: 18px;
+    text-align: right;
+}
+
+.stockflow-user-tools i {
+    background: #e1e8ef;
+    height: 25px;
+    width: 1px;
+}
+
+.stockflow-user-tools small {
+    display: block;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+.stockflow-content {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 26px 16px 28px;
+}
+
+.stockflow-title {
+    margin-bottom: 19px;
+}
+
+.stockflow-title h1 {
+    color: #142b4d;
+    font-size: 24px;
+    letter-spacing: -.04em;
+    line-height: 1;
+    margin: 0 0 6px;
+}
+
+.stockflow-title p {
+    color: #687e9a;
+    font-size: 11px;
+}
+
+.stockflow-metrics,
+.stockflow-row {
+    display: grid;
+    gap: 13px;
+}
+
+.stockflow-metrics {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 16px;
+}
+
+.stockflow-row-top {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.32fr);
+    margin-bottom: 14px;
+}
+
+.stockflow-row-bottom {
+    grid-template-columns: 1.06fr 1.13fr .92fr;
+}
+
+.stockflow-metrics article {
+    align-items: flex-start;
+    border: 1px solid;
+    border-radius: 6px;
+    display: flex;
+    gap: 12px;
+    min-height: 94px;
+    padding: 15px 13px;
+}
+
+.stockflow-metrics .blue {
+    background: #edf5ff;
+    border-color: #c9e0ff;
+}
+
+.stockflow-metrics .green {
+    background: #e9fbf3;
+    border-color: #c1f0db;
+}
+
+.stockflow-metrics .amber {
+    background: #fff8e8;
+    border-color: #f7e3ae;
+}
+
+.stockflow-metrics .red {
+    background: #fff0f1;
+    border-color: #facdd0;
+}
+
+.stockflow-metrics article>b {
+    align-items: center;
+    border-radius: 50%;
+    display: flex;
+    flex: 0 0 auto;
+    font-size: 20px;
+    height: 39px;
+    justify-content: center;
+    width: 39px;
+}
+
+.blue>b {
+    background: #d9ecff;
+    color: #247cf0;
+}
+
+.green>b {
+    background: #c9f3df;
+    color: #0b9865;
+}
+
+.amber>b {
+    background: #ffedbb;
+    color: #ed9a05;
+}
+
+.red>b {
+    background: #ffd8da;
+    color: #ed3845;
+}
+
+.stockflow-metrics label {
+    color: #244a75;
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.stockflow-metrics strong {
+    color: #142b4d;
+    display: block;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.stockflow-metrics small {
+    color: #66809e;
+    display: block;
+    font-size: 9px;
+    margin-top: 5px;
+}
+
+.stockflow-panel {
+    background: #fff;
+    border: 1px solid #e5ebf3;
+    border-radius: 6px;
+    box-shadow: 0 3px 12px #17376008;
+    min-width: 0;
+    padding: 13px 12px;
+}
+
+.stockflow-panel h2 {
+    color: #142b4d;
+    font-size: 12px;
+    margin: 0 0 12px;
+}
+
+.stockflow-panel-title {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.stockflow-panel-title h2 {
+    margin: 0;
+}
+
+.stockflow-panel-title a {
+    color: #1674e5;
+    font-size: 9px;
+    text-decoration: none;
+}
+
+.stockflow-chart {
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    min-height: 162px;
+}
+
+.stockflow-donut {
+    align-items: center;
+    background: conic-gradient(#14a46f 0 var(--in), #e9a21a var(--in) var(--low), #e9434f var(--low) 100%);
+    border-radius: 50%;
+    display: flex;
+    flex: 0 0 132px;
+    height: 132px;
+    justify-content: center;
+    position: relative;
+}
+
+.stockflow-donut:after {
+    background: #fff;
+    border-radius: 50%;
+    content: '';
+    height: 86px;
+    position: absolute;
+    width: 86px;
+}
+
+.stockflow-donut span {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+.stockflow-donut strong {
+    display: block;
+    font-size: 22px;
+    line-height: 1;
+}
+
+.stockflow-donut small {
+    color: #71839c;
+    display: block;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.stockflow-legend {
+    display: grid;
+    flex: 1;
+    gap: 15px;
+}
+
+.stockflow-legend p {
+    align-items: center;
+    border-bottom: 1px solid #eef2f7;
+    color: #536b88;
+    display: grid;
+    font-size: 10px;
+    gap: 5px;
+    grid-template-columns: 9px 1fr auto auto;
+    margin: 0;
+    padding-bottom: 8px;
+}
+
+.stockflow-legend p:last-child {
+    border: 0;
+    padding: 0;
+}
+
+.stockflow-legend i {
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+}
+
+.stockflow-legend .in {
+    background: #14a46f;
+}
+
+.stockflow-legend .low {
+    background: #e9a21a;
+}
+
+.stockflow-legend .out {
+    background: #e9434f;
+}
+
+.stockflow-legend b {
+    color: #142b4d;
+}
+
+.stockflow-legend small {
+    color: #7d8da2;
+}
+
+.stockflow-panel table {
+    border-collapse: collapse;
+    min-width: 100%;
+    width: 100%;
+}
+
+.stockflow-panel th {
+    background: #f8fafc;
+    color: #52708f;
+    font-size: 9px;
+    padding: 8px 7px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.stockflow-panel td {
+    border-bottom: 1px solid #edf1f5;
+    color: #344e6d;
+    font-size: 9px;
+    padding: 8px 7px;
+    white-space: nowrap;
+}
+
+.stockflow-panel td strong,
+.stockflow-panel td small {
+    display: block;
+}
+
+.stockflow-panel td strong {
+    color: #274b75;
+    font-size: 9px;
+}
+
+.stockflow-panel td small {
+    color: #8ca0b7;
+    font-size: 8px;
+    margin-top: 2px;
+}
+
+.stockflow-panel tbody tr:last-child td {
+    border: 0;
+}
+
+.pill,
+.status {
+    border-radius: 99px;
+    display: inline-block;
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 700;
+    padding: 3px 8px;
+}
+
+.pill.in {
+    background: #d9f7e9;
+    color: #0d9d68;
+}
+
+.pill.out {
+    background: #ffdfe2;
+    color: #e13e4c;
+}
+
+.pill.adjustment {
+    background: #fff0cc;
+    color: #d38b06;
+}
+
+.positive {
+    color: #0c9e67 !important;
+    font-weight: 700;
+}
+
+.negative {
+    color: #e14350 !important;
+    font-weight: 700;
+}
+
+.status.low {
+    background: #fff0c8;
+    color: #c98705;
+}
+
+.status.out {
+    background: #ffdfe2;
+    color: #e13e4c;
+}
+
+.empty {
+    color: #9aaabd !important;
+    padding: 22px 8px !important;
+    text-align: center;
+}
+
+.stockflow-notifications {
+    display: grid;
+}
+
+.stockflow-notifications>div {
+    align-items: flex-start;
+    border-bottom: 1px solid #edf1f5;
+    display: flex;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.stockflow-notifications>div:last-child {
+    border: 0;
+}
+
+.stockflow-notifications>div>span {
+    align-items: center;
+    border-radius: 50%;
+    display: flex;
+    flex: 0 0 auto;
+    height: 25px;
+    justify-content: center;
+    width: 25px;
+}
+
+.stockflow-notifications .low {
+    background: #fff1ce;
+    color: #e9a21a;
+}
+
+.stockflow-notifications .out {
+    background: #ffe1e3;
+    color: #e9434f;
+}
+
+.stockflow-notifications p {
+    margin: 0;
+    min-width: 0;
+}
+
+.stockflow-notifications strong,
+.stockflow-notifications small {
+    display: block;
+}
+
+.stockflow-notifications strong {
+    color: #294c74;
+    font-size: 9px;
+}
+
+.stockflow-notifications small {
+    color: #7f93ab;
+    font-size: 8px;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stockflow-notifications time {
+    color: #9caabd;
+    font-size: 8px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.stockflow-top-products {
+    display: grid;
+    gap: 5px;
+}
+
+.stockflow-top-products>div {
+    align-items: center;
+    border-bottom: 1px solid #edf1f5;
+    display: grid;
+    gap: 6px;
+    grid-template-columns: 18px 25px 1fr auto;
+    padding: 6px 0;
+}
+
+.stockflow-top-products>div:last-child {
+    border: 0;
+}
+
+.stockflow-top-products>div>b {
+    align-items: center;
+    background: #e6f0ff;
+    border-radius: 50%;
+    color: #287fe9;
+    display: flex;
+    font-size: 9px;
+    height: 18px;
+    justify-content: center;
+    width: 18px;
+}
+
+.stockflow-top-products>div>span {
+    color: #789878;
+    font-size: 14px;
+}
+
+.stockflow-top-products p {
+    margin: 0;
+    min-width: 0;
+}
+
+.stockflow-top-products strong,
+.stockflow-top-products small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stockflow-top-products strong {
+    color: #315476;
+    font-size: 9px;
+}
+
+.stockflow-top-products small {
+    color: #90a2b6;
+    font-size: 8px;
+    margin-top: 2px;
+}
+
+.stockflow-top-products em {
+    color: #304c6c;
+    font-size: 9px;
+    font-style: normal;
+}
+
+@media (max-width: 980px) {
+    .stockflow-row-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+    .stockflow-row-bottom> :last-child {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 760px) {
+    .stockflow-sidebar {
+        min-height: 100vh;
+        position: fixed;
+        transform: translateX(-100%);
+        z-index: 10;
+    }
+    .stockflow-row-top,
+    .stockflow-row-bottom {
+        grid-template-columns: 1fr;
+    }
+    .stockflow-row-bottom> :last-child {
+        grid-column: auto;
+    }
+    .stockflow-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .stockflow-metrics {
+        grid-template-columns: 1fr;
+    }
+    .stockflow-chart {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .stockflow-legend {
+        width: 100%;
+    }
+}
