@@ -1,0 +1,70 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/stockflow.css' %}">
+{% endblock %}
+
+{% block title %}{{ report_title }} | StockFlow Reports{% endblock %}
+
+{% block content %}
+<div class="stockflow-reports">
+    <header class="stockflow-reports__header">
+        <div>
+            <p class="stockflow-eyebrow">Reporting center</p>
+            <h1>{{ report_title }}</h1>
+            <p class="stockflow-muted">Generate decision-ready inventory reports from your live data.</p>
+        </div>
+        <a class="stockflow-button" href="?report={{ report }}&export=csv{% for key, value in filters.items %}&{{ key }}={{ value }}{% endfor %}">
+            <i class="fas fa-file-csv"></i> Export CSV
+        </a>
+    </header>
+
+    <form class="stockflow-report-toolbar" method="get">
+        <label>Report
+            <select name="report">
+                {% for key, label in report_choices %}
+                <option value="{{ key }}"{% if key == report %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>From <input type="date" name="start_date" value="{{ filters.start_date|default:'' }}"></label>
+        <label>To <input type="date" name="end_date" value="{{ filters.end_date|default:'' }}"></label>
+        <label>Category
+            <select name="category">
+                <option value="">All categories</option>
+                {% for category in categories %}<option value="{{ category.id }}"{% if filters.category == category.id|stringformat:'s' %} selected{% endif %}>{{ category.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Supplier
+            <select name="supplier">
+                <option value="">All suppliers</option>
+                {% for supplier in suppliers %}<option value="{{ supplier.id }}"{% if filters.supplier == supplier.id|stringformat:'s' %} selected{% endif %}>{{ supplier.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <button class="stockflow-button" type="submit"><i class="fas fa-chart-line"></i> Generate</button>
+    </form>
+
+    <section class="stockflow-report-card">
+        <div class="stockflow-report-card__meta">
+            <span>{{ rows|length }} result{{ rows|length|pluralize }}</span>
+            <a href="/admin/reports/">Clear filters</a>
+        </div>
+        {% if rows %}
+        <div class="stockflow-report-table-wrap">
+            <table class="stockflow-report-table">
+                <thead><tr>{% for key, label in columns %}<th>{{ label }}</th>{% endfor %}</tr></thead>
+                <tbody>
+                    {% for row in display_rows %}
+                    <tr>{% for value in row %}<td>{{ value|default:'-' }}</td>{% endfor %}</tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="stockflow-report-empty"><i class="fas fa-chart-line"></i><h2>No results</h2><p>Try changing the filters or record more inventory activity.</p></div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

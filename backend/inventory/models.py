@@ -134,6 +134,7 @@ class Notification(models.Model):
      NOTIFICATION_TYPES = [
         ('LOW_STOCK', 'Low Stock'),
         ('OUT_OF_STOCK', 'Out of Stock'),
+          ('STOCK_MOVEMENT', 'Stock Movement'),
        
      ]
      product = models.ForeignKey(

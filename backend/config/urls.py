@@ -24,8 +24,10 @@ from rest_framework_simplejwt.views import (  # type: ignore[import-not-found]
 
 
 urlpatterns = [
+    path('admin/reports/', include(('reports.admin_urls', 'reports_admin'), namespace='reports_admin')),
     path('admin/', admin.site.urls),
 
+    path('api/reports/', include('reports.urls')),
     path('api/', include('inventory.urls')),
     path('api/auth/', include('accounts.urls')),
 

@@ -78,6 +78,22 @@ class StockMovementTests(TestCase):
 
         self.assertEqual(movement.created_by, self.user)
 
+    def test_stock_movement_creates_completion_notification(self):
+        create_stock_movement(
+            product=self.product,
+            movement_type='IN',
+            quantity=5,
+            reason='Completion notification test',
+            user=self.user,
+        )
+
+        notification = Notification.objects.get(
+            user=self.user,
+            notification_type='STOCK_MOVEMENT',
+        )
+        self.assertIn('Stock in completed', notification.title)
+        self.assertIn('Current quantity: 20', notification.message)
+
 
 class InventoryApiTests(TestCase):
 
@@ -124,6 +140,33 @@ class InventoryApiTests(TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['reference'], 'INV-2026-0012')
+        self.assertIn('completed', response.data['message'])
+
+    def test_stock_movement_cannot_be_updated_or_deleted(self):
+        movement = create_stock_movement(
+            product=self.product,
+            movement_type='IN',
+            quantity=3,
+            user=self.user,
+        )
+        admin_user = User.objects.create_superuser(
+            username='movement_admin',
+            password='testpass123',
+        )
+        admin_user.profile.role = 'ADMIN'
+        admin_user.profile.save()
+        self.client.force_authenticate(admin_user)
+
+        detail_url = f'/api/stock-movements/{movement.id}/'
+        update_response = self.client.patch(
+            detail_url,
+            {'quantity': 99},
+            format='json',
+        )
+        delete_response = self.client.delete(detail_url)
+
+        self.assertEqual(update_response.status_code, 405)
+        self.assertEqual(delete_response.status_code, 405)
 
     def test_notifications_can_filter_by_read_state(self):
         Notification.objects.create(

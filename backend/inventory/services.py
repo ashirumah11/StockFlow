@@ -51,7 +51,10 @@ def create_stock_movement(
     create_stock_notification(
         product=product,
         previous_status=previous_status,
-        new_status=new_status
+        new_status=new_status,
+        movement_type=movement_type,
+        quantity=quantity,
+        user=user,
     )
 
     return movement

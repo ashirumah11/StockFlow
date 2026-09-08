@@ -13,13 +13,31 @@
     <header class="stockflow-dashboard__header">
         <div>
             <p class="stockflow-eyebrow">Inventory command center</p>
-            <h1>Good {% now "A" %}, {{ user.get_short_name|default:user.username }}</h1>
+            <h1>Good {{ stockflow_stats.greeting }}, {{ user.get_short_name|default:user.username }}</h1>
             <p class="stockflow-muted">A live view of your inventory position.</p>
         </div>
-        <a class="stockflow-button" href="{% url 'admin:inventory_product_add' %}">
-            <i class="fas fa-plus"></i> Add product
+        <a class="stockflow-button" href="{% url 'admin:inventory_notification_changelist' %}?is_read__exact=0">
+            <i class="fas fa-bell"></i> Alerts{% if stockflow_stats.unread_notification_count %} ({{ stockflow_stats.unread_notification_count }}){% endif %}
         </a>
     </header>
+
+    {% if stockflow_stats.unread_notifications %}
+    <section class="stockflow-alert-panel" aria-label="Unread notifications">
+        <div class="stockflow-alert-panel__heading">
+            <div>
+                <p class="stockflow-eyebrow">Notifications</p>
+                <h2>Latest inventory alerts</h2>
+            </div>
+            <a href="{% url 'admin:inventory_notification_changelist' %}?is_read__exact=0">View all</a>
+        </div>
+        {% for notification in stockflow_stats.unread_notifications %}
+        <div class="stockflow-alert">
+            <i class="fas {% if notification.notification_type == 'STOCK_MOVEMENT' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+            <div><strong>{{ notification.title }}</strong><span>{{ notification.message }}</span></div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
 
     <section class="stockflow-stat-grid" aria-label="Inventory totals">
         <article class="stockflow-stat-card stockflow-stat-card--green">
@@ -41,6 +59,11 @@
             <span class="stockflow-stat-card__label">Out of stock</span>
             <strong>{{ stockflow_stats.out_of_stock }}</strong>
             <span class="stockflow-stat-card__hint">Requires attention</span>
+        </article>
+        <article class="stockflow-stat-card stockflow-stat-card--blue">
+            <span class="stockflow-stat-card__label">Inventory value</span>
+            <strong>{{ stockflow_stats.inventory_value|floatformat:2 }}</strong>
+            <span class="stockflow-stat-card__hint">Current stock at cost</span>
         </article>
     </section>
 
@@ -90,9 +113,77 @@
         </article>
     </section>
 
+    <section class="stockflow-panel-grid stockflow-panel-grid--lower">
+        <article class="stockflow-panel">
+            <div class="stockflow-panel__heading">
+                <div>
+                    <p class="stockflow-eyebrow">Replenishment queue</p>
+                    <h2>Low stock products</h2>
+                </div>
+                <a href="{% url 'admin:inventory_product_changelist' %}?stock_status=low_stock">View all</a>
+            </div>
+            {% if stockflow_stats.low_stock_products %}
+            <div class="stockflow-low-stock-list">
+                {% for product in stockflow_stats.low_stock_products %}
+                <a href="{% url 'admin:inventory_product_change' product.pk %}">
+                    <span><strong>{{ product.name }}</strong><small>{{ product.sku }}</small></span>
+                    <b>{{ product.quantity }} / {{ product.minimum_stock }}</b>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="stockflow-empty">Everything is above its minimum level.</p>
+            {% endif %}
+        </article>
+
+        <article class="stockflow-panel">
+            <div class="stockflow-panel__heading">
+                <div>
+                    <p class="stockflow-eyebrow">Portfolio mix</p>
+                    <h2>Stock by category</h2>
+                </div>
+                <a href="{% url 'admin:inventory_category_changelist' %}">Manage categories</a>
+            </div>
+            {% if stockflow_stats.category_snapshot %}
+            <div class="stockflow-category-list">
+                {% for category in stockflow_stats.category_snapshot %}
+                <div class="stockflow-category-row">
+                    <span>{{ category.category__name|default:'Uncategorized' }}</span>
+                    <strong>{{ category.total_quantity }}</strong>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="stockflow-empty">No category data yet.</p>
+            {% endif %}
+        </article>
+    </section>
+
+    <section class="stockflow-panel stockflow-chart-panel">
+        <div class="stockflow-panel__heading">
+            <div>
+                <p class="stockflow-eyebrow">Last seven days</p>
+                <h2>Stock movement trend</h2>
+            </div>
+            <span class="stockflow-chart-key"><i class="stockflow-dot stockflow-dot--green"></i>In <i class="stockflow-dot stockflow-dot--red"></i>Out</span>
+        </div>
+        <div class="stockflow-chart" aria-label="Stock movement chart">
+            {% for day in stockflow_stats.movement_chart %}
+            <div class="stockflow-chart__day">
+                <div class="stockflow-chart__bars">
+                    <span class="stockflow-bar stockflow-bar--in" style="height: {{ day.stock_in|add:12 }}px" title="{{ day.stock_in }} in"></span>
+                    <span class="stockflow-bar stockflow-bar--out" style="height: {{ day.stock_out|add:12 }}px" title="{{ day.stock_out }} out"></span>
+                </div>
+                <small>{{ day.label }}</small>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
     <section class="stockflow-quick-actions">
+        <a href="/admin/reports/"><i class="fas fa-chart-line"></i><span>Generate reports</span><small>Analyze and export inventory data</small></a>
         <a href="{% url 'admin:inventory_product_changelist' %}"><i class="fas fa-box"></i><span>Manage products</span><small>Catalog and stock levels</small></a>
-        <a href="{% url 'admin:inventory_stockmovement_add' %}"><i class="fas fa-right-left"></i><span>Record movement</span><small>Update stock instantly</small></a>
+        <a href="{% url 'admin:inventory_stockmovement_changelist' %}"><i class="fas fa-right-left"></i><span>Movement history</span><small>Review immutable stock activity</small></a>
         <a href="{% url 'admin:inventory_supplier_changelist' %}"><i class="fas fa-truck"></i><span>View suppliers</span><small>Keep partners organized</small></a>
     </section>
 </div>

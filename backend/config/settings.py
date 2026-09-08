@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'inventory',
     'accounts',
+    'reports',
     'rest_framework',
 ]
 
@@ -158,6 +159,13 @@ JAZZMIN_SETTINGS = {
     'welcome_sign': 'Inventory command center',
     'show_ui_builder': False,
     'custom_css': 'admin/css/stockflow.css',
+    'menu_links': [
+        {
+            'name': 'Reports',
+            'url': '/admin/reports/',
+            'icon': 'fas fa-chart-line',
+        },
+    ],
     'icons': {
         'inventory.product': 'fas fa-box',
         'inventory.category': 'fas fa-tags',

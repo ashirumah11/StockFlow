@@ -3,11 +3,44 @@ from django.contrib.auth.models import User
 from .models import Notification
 
 
-def create_stock_notification(product, previous_status, new_status):
+def create_stock_notification(
+    product,
+    previous_status,
+    new_status,
+    movement_type=None,
+    quantity=None,
+    user=None,
+):
     """
     Create a notification when a product transitions
     into LOW_STOCK or OUT_OF_STOCK.
     """
+    users = list(User.objects.filter(
+        profile__role__in=['ADMIN', 'MANAGER']
+    ))
+    if user and user.is_authenticated and user not in users:
+        users.append(user)
+
+    if movement_type:
+        movement_labels = {
+            'IN': 'Stock in completed',
+            'OUT': 'Stock out completed',
+            'ADJUSTMENT': 'Stock adjustment completed',
+        }
+        movement_label = movement_labels[movement_type]
+        movement_message = (
+            f'{movement_label} for {product.name}: {quantity} units processed. '
+            f'Current quantity: {product.quantity}.'
+        )
+        for user in users:
+            Notification.objects.create(
+                user=user,
+                product=product,
+                title=movement_label,
+                message=movement_message,
+                notification_type='STOCK_MOVEMENT',
+            )
+
     if previous_status == new_status:
         return
 
@@ -28,16 +61,12 @@ def create_stock_notification(product, previous_status, new_status):
     else:
         return
 
-    users = User.objects.filter(
-        profile__role__in=['ADMIN', 'MANAGER']
-    )
-
     for user in users:
-       Notification.objects.create(
-          user=user,
-          product=product,
-          title=title,
-          message=message,
-          notification_type=notification_type,
-       )
+        Notification.objects.create(
+            user=user,
+            product=product,
+            title=title,
+            message=message,
+            notification_type=notification_type,
+        )
 

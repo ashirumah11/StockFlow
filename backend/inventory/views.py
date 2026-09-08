@@ -242,6 +242,7 @@ class StockMovementViewSet(viewsets.ModelViewSet):
     queryset = StockMovement.objects.all().order_by('-created_at')
     serializer_class = StockMovementSerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'post', 'head', 'options']
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['product', 'movement_type', 'created_by']
     search_fields = ['product__name', 'product__sku', 'reason']
@@ -267,9 +268,15 @@ class StockMovementViewSet(viewsets.ModelViewSet):
         )
 
         output_serializer = self.get_serializer(movement)
+        response_data = output_serializer.data
+        response_data['message'] = (
+            f'Stock {movement.get_movement_type_display().lower()} completed '
+            f'for {movement.product.name}. '
+            f'Current quantity: {movement.product.quantity}.'
+        )
 
         return Response(
-            output_serializer.data,
+            response_data,
             status=status.HTTP_201_CREATED
         )
 
