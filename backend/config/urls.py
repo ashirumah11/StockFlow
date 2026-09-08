@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from inventory.admin import stockflow_admin_site
 # cSpell:ignore simplejwt
 from rest_framework_simplejwt.views import (  # type: ignore[import-not-found]
     TokenObtainPairView,
@@ -25,7 +24,7 @@ from rest_framework_simplejwt.views import (  # type: ignore[import-not-found]
 
 
 urlpatterns = [
-    path('admin/', stockflow_admin_site.urls),
+    path('admin/', admin.site.urls),
 
     path('api/', include('inventory.urls')),
     path('api/auth/', include('accounts.urls')),

@@ -8,7 +8,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'name', 'sku', 'category', 'supplier', 'quantity',
+            'id', 'name', 'sku', 'image_url', 'category', 'supplier', 'quantity',
             'minimum_stock', 'maximum_stock', 'price', 'stock_status',
             'created_at', 'updated_at',
         )
@@ -77,6 +77,7 @@ class StockMovementSerializer(serializers.ModelSerializer):
             'movement_type',
             'quantity',
             'reason',
+            'reference',
             'created_by',
             'created_by_name',
             'created_at',

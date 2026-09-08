@@ -7,6 +7,9 @@ from .permissions import IsAdmin, IsManagerOrAdmin
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db import models
 from django.db.models import Count, Sum
+from django.db.models.functions import TruncDate
+from django.utils import timezone
+from datetime import timedelta
 
 from .models import Product, Notification, StockMovement, Category, Supplier
 from .serializers import (
@@ -17,6 +20,35 @@ from .serializers import (
     SupplierSerializer,
 )
 from .services import create_stock_movement
+
+
+def get_movement_analytics(period):
+    periods = {'7d': 7, '30d': 30, '3m': 90, '12m': 365}
+    days = periods.get(period, 7)
+    today = timezone.localdate()
+    start_date = today - timedelta(days=days - 1)
+
+    movements = (
+        StockMovement.objects
+        .filter(created_at__date__gte=start_date)
+        .annotate(day=TruncDate('created_at'))
+        .values('day', 'movement_type')
+        .annotate(total=Sum('quantity'))
+    )
+    totals = {
+        (row['day'], row['movement_type']): row['total']
+        for row in movements
+    }
+
+    return [
+        {
+            'date': (start_date + timedelta(days=offset)).isoformat(),
+            'stock_in': totals.get((start_date + timedelta(days=offset), 'IN'), 0),
+            'stock_out': totals.get((start_date + timedelta(days=offset), 'OUT'), 0),
+            'adjustments': totals.get((start_date + timedelta(days=offset), 'ADJUSTMENT'), 0),
+        }
+        for offset in range(days)
+    ]
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -177,6 +209,32 @@ class DashboardView(APIView):
                 recent_movements[:6],
                 many=True
             ).data,
+            'movement_analytics': get_movement_analytics(
+                request.query_params.get('period', '7d')
+            ),
+        })
+
+
+class InventoryReportView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        products = Product.objects.select_related('category', 'supplier')
+        return Response({
+            'generated_at': timezone.now(),
+            'summary': {
+                'total_products': products.count(),
+                'total_stock': sum(product.quantity for product in products),
+                'inventory_value': sum(
+                    product.quantity * product.price for product in products
+                ),
+                'low_stock': products.filter(
+                    quantity__gt=0,
+                    quantity__lte=models.F('minimum_stock'),
+                ).count(),
+                'out_of_stock': products.filter(quantity=0).count(),
+            },
+            'products': ProductSerializer(products, many=True).data,
         })
 
 
@@ -204,6 +262,7 @@ class StockMovementViewSet(viewsets.ModelViewSet):
             movement_type=serializer.validated_data['movement_type'],
             quantity=serializer.validated_data['quantity'],
             reason=serializer.validated_data.get('reason', ''),
+            reference=serializer.validated_data.get('reference', ''),
             user=request.user
         )
 
@@ -220,9 +279,16 @@ class NotificationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Notification.objects.filter(
+        queryset = Notification.objects.filter(
             user=self.request.user
         ).order_by('-created_at')
+        notification_type = self.request.query_params.get('type')
+        is_read = self.request.query_params.get('is_read')
+        if notification_type:
+            queryset = queryset.filter(notification_type=notification_type)
+        if is_read in {'true', 'false'}:
+            queryset = queryset.filter(is_read=is_read == 'true')
+        return queryset
 
     @action(detail=True, methods=['patch'], url_path='read')
     def mark_as_read(self, request, pk=None):

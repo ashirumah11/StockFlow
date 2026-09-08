@@ -61,13 +61,14 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'inventory.context_processors.dashboard_stats',
             ],
         },
     },
@@ -146,9 +147,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ),
-    'DEFAULT_PAGINATION_CLASS': (
-        'rest_framework.pagination.PageNumberPagination',
-    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
 
@@ -156,37 +155,19 @@ JAZZMIN_SETTINGS = {
     'site_title': 'StockFlow Admin',
     'site_header': 'StockFlow',
     'site_brand': 'StockFlow',
-    'welcome_sign': 'StockFlow Administration',
-    'theme': 'flatly',
-    'show_sidebar': True,
-    'navigation_expanded': True,
+    'welcome_sign': 'Inventory command center',
     'show_ui_builder': False,
-    'custom_css': 'admin/css/stockflow-admin.css',
-    'custom_js': 'admin/js/stockflow-admin.js',
-    'related_modal_active': True,
-    'changeform_format': 'horizontal_tabs',
+    'custom_css': 'admin/css/stockflow.css',
     'icons': {
-        'inventory': 'fas fa-boxes',
         'inventory.product': 'fas fa-box',
         'inventory.category': 'fas fa-tags',
         'inventory.supplier': 'fas fa-truck',
         'inventory.stockmovement': 'fas fa-right-left',
         'inventory.notification': 'fas fa-bell',
-        'inventory.userprofile': 'fas fa-user-gear',
-        'auth.user': 'fas fa-users',
+        'inventory.userprofile': 'fas fa-users',
         'auth.group': 'fas fa-user-shield',
+        'auth.user': 'fas fa-user',
     },
-    'order_with_respect_to': [
-        'inventory',
-        'inventory.product',
-        'inventory.stockmovement',
-        'inventory.category',
-        'inventory.supplier',
-        'inventory.notification',
-        'inventory.userprofile',
-        'auth',
-        'auth.user',
-        'auth.group',
-    ],
 }
+
 

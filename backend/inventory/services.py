@@ -10,6 +10,7 @@ def create_stock_movement(
     movement_type,
     quantity,
     reason='',
+    reference='',
     user=None
 ):
     if quantity <= 0:
@@ -43,6 +44,7 @@ def create_stock_movement(
         movement_type=movement_type,
         quantity=quantity,
         reason=reason,
+        reference=reference,
         created_by=user
     )
 

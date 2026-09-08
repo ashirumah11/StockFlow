@@ -8,6 +8,7 @@ from .views import (
     StockMovementViewSet,
     NotificationViewSet,
     DashboardView,
+    InventoryReportView,
 )
 
 
@@ -40,6 +41,11 @@ dashboard_urlpatterns = [
         'dashboard/',
         DashboardView.as_view(),
         name='dashboard'
+    ),
+    path(
+        'reports/inventory/',
+        InventoryReportView.as_view(),
+        name='inventory-report'
     ),
 ]
 

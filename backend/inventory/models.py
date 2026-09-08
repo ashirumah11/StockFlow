@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Product(models.Model):
     name = models.CharField(max_length=200)
     sku = models.CharField(max_length=100, unique=True)
+    image_url = models.URLField(blank=True)
     category = models.ForeignKey(
         'Category',
         on_delete=models.SET_NULL,
@@ -106,6 +107,11 @@ class StockMovement(models.Model):
 
     reason = models.CharField(
         max_length=255,
+        blank=True
+    )
+
+    reference = models.CharField(
+        max_length=100,
         blank=True
     )
 

@@ -1,0 +1,99 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/stockflow.css' %}">
+{% endblock %}
+
+{% block title %}StockFlow Dashboard{% endblock %}
+
+{% block content %}
+<div class="stockflow-dashboard">
+    <header class="stockflow-dashboard__header">
+        <div>
+            <p class="stockflow-eyebrow">Inventory command center</p>
+            <h1>Good {% now "A" %}, {{ user.get_short_name|default:user.username }}</h1>
+            <p class="stockflow-muted">A live view of your inventory position.</p>
+        </div>
+        <a class="stockflow-button" href="{% url 'admin:inventory_product_add' %}">
+            <i class="fas fa-plus"></i> Add product
+        </a>
+    </header>
+
+    <section class="stockflow-stat-grid" aria-label="Inventory totals">
+        <article class="stockflow-stat-card stockflow-stat-card--green">
+            <span class="stockflow-stat-card__label">Total products</span>
+            <strong>{{ stockflow_stats.total_products }}</strong>
+            <span class="stockflow-stat-card__hint">Active catalog items</span>
+        </article>
+        <article class="stockflow-stat-card stockflow-stat-card--gold">
+            <span class="stockflow-stat-card__label">Total stock</span>
+            <strong>{{ stockflow_stats.total_stock }}</strong>
+            <span class="stockflow-stat-card__hint">Units currently held</span>
+        </article>
+        <article class="stockflow-stat-card stockflow-stat-card--amber">
+            <span class="stockflow-stat-card__label">Low stock</span>
+            <strong>{{ stockflow_stats.low_stock }}</strong>
+            <span class="stockflow-stat-card__hint">Needs replenishment</span>
+        </article>
+        <article class="stockflow-stat-card stockflow-stat-card--red">
+            <span class="stockflow-stat-card__label">Out of stock</span>
+            <strong>{{ stockflow_stats.out_of_stock }}</strong>
+            <span class="stockflow-stat-card__hint">Requires attention</span>
+        </article>
+    </section>
+
+    <section class="stockflow-panel-grid">
+        <article class="stockflow-panel stockflow-health-panel">
+            <div class="stockflow-panel__heading">
+                <div>
+                    <p class="stockflow-eyebrow">Inventory health</p>
+                    <h2>Stock availability</h2>
+                </div>
+                <span class="stockflow-health-value">{{ stockflow_stats.health_percent }}%</span>
+            </div>
+            <div class="stockflow-progress" role="progressbar" aria-valuenow="{{ stockflow_stats.health_percent }}" aria-valuemin="0" aria-valuemax="100">
+                <span style="width: {{ stockflow_stats.health_percent }}%"></span>
+            </div>
+            <div class="stockflow-health-legend">
+                <span><i class="stockflow-dot stockflow-dot--green"></i>In stock: {{ stockflow_stats.in_stock }}</span>
+                <span><i class="stockflow-dot stockflow-dot--amber"></i>Low stock: {{ stockflow_stats.low_stock }}</span>
+                <span><i class="stockflow-dot stockflow-dot--red"></i>Out: {{ stockflow_stats.out_of_stock }}</span>
+            </div>
+        </article>
+
+        <article class="stockflow-panel">
+            <div class="stockflow-panel__heading">
+                <div>
+                    <p class="stockflow-eyebrow">Inventory activity</p>
+                    <h2>Recent movements</h2>
+                </div>
+                <a href="{% url 'admin:inventory_stockmovement_changelist' %}">View all</a>
+            </div>
+            {% if stockflow_stats.recent_movements %}
+            <div class="stockflow-movement-list">
+                {% for movement in stockflow_stats.recent_movements %}
+                <div class="stockflow-movement">
+                    <span class="stockflow-movement__icon stockflow-movement__icon--{{ movement.movement_type|lower }}"><i class="fas fa-arrow-{{ movement.movement_type|lower }}"></i></span>
+                    <div>
+                        <strong>{{ movement.product.name }}</strong>
+                        <span>{{ movement.get_movement_type_display }}{% if movement.created_by %} by {{ movement.created_by.get_short_name|default:movement.created_by.username }}{% endif %}</span>
+                    </div>
+                    <b>{{ movement.quantity }}</b>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="stockflow-empty">No stock movements recorded yet.</p>
+            {% endif %}
+        </article>
+    </section>
+
+    <section class="stockflow-quick-actions">
+        <a href="{% url 'admin:inventory_product_changelist' %}"><i class="fas fa-box"></i><span>Manage products</span><small>Catalog and stock levels</small></a>
+        <a href="{% url 'admin:inventory_stockmovement_add' %}"><i class="fas fa-right-left"></i><span>Record movement</span><small>Update stock instantly</small></a>
+        <a href="{% url 'admin:inventory_supplier_changelist' %}"><i class="fas fa-truck"></i><span>View suppliers</span><small>Keep partners organized</small></a>
+    </section>
+</div>
+{% endblock %}
